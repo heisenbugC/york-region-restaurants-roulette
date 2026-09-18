@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>York Region Restaurant Roulette</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>York Region Food Roulette</h1>
+      <div class="filter-group">
+        <label for="filter-select">Area:</label>
+        <select id="filter-select">
+          <option value="All">All York Region</option>
+          <option value="Richmond Hill">Richmond Hill</option>
+          <option value="Markham">Markham</option>
+          <option value="Vaughan">Vaughan</option>
+          <option value="Newmarket">Newmarket</option>
+          <option value="Aurora">Aurora</option>
+          <option value="Whitchurch-Stouffville">Whitchurch-Stouffville</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="wheel-wrapper">
+      <div class="pointer">▼</div>
+      <canvas id="roulette" width="500" height="500"></canvas>
+      <button id="spin-btn">SPIN!</button>
+    </main>
+
+    <!-- Modal for showing winning restaurant -->
+    <div id="result-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2 id="result-name"></h2>
+        <p id="result-rating"></p>
+        <p id="result-address"></p>
+        <div class="modal-actions">
+          <a id="result-maps-link" target="_blank" rel="noopener" class="btn">View on Google Maps</a>
+          <button id="close-modal" class="btn secondary">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
