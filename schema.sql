@@ -2,7 +2,8 @@ DROP TABLE IF EXISTS restaurants;
 
 CREATE TABLE restaurants (
     id TEXT PRIMARY KEY,               
-    name TEXT NOT NULL,
+    name_en TEXT NOT NULL,
+    name_zh TEXT,
     address TEXT,
     rating REAL,
     municipality TEXT,

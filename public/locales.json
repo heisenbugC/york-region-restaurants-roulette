@@ -1,0 +1,43 @@
+{
+  "en_CA": {
+    "title": "Pick a spot, trust the spin!",
+    "area": "City:",
+    "allAreas": "All York Region",
+    "statusMoving": "Click wheel to stop",
+    "statusStopped": "Click wheel to spin",
+    "loadError": "Unable to load restaurants",
+    "viewOnMaps": "View on Google Maps",
+    "rating": "Rating",
+    "address": "Address",
+    "richmondHill": "Richmond Hill",
+    "markham": "Markham",
+    "vaughan": "Vaughan",
+    "newmarket": "Newmarket",
+    "aurora": "Aurora",
+    "stouffville": "Whitchurch-Stouffville",
+    "openingHours": "Opening Hours",
+    "reviewsTitle": "Reviews Summary",
+    "recentReviews": "Recent Reviews"
+    
+  },
+  "zh_CN": {
+    "title": "转到啥吃啥吧！",
+    "area": "城市:",
+    "allAreas": "全部",
+    "statusMoving": "点击转盘停止",
+    "statusStopped": "点击转盘转动",
+    "loadError": "餐厅加载失败",
+    "viewOnMaps": "在 Google 地图查看",
+    "rating": "评分",
+    "address": "地址",
+    "richmondHill": "列治文山",
+    "markham": "万锦",
+    "vaughan": "旺市",
+    "newmarket": "新市",
+    "aurora": "奥罗拉",
+    "stouffville": "斯托夫维尔",
+    "openingHours": "营业时间",
+    "reviewsTitle": "评论概览",
+    "recentReviews": "最新评论"
+  }
+}

@@ -2,47 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>York Region Restaurant Roulette</title>
+  <base href="/roulette/" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <title>吃货转盘 | York Region Restaurant Roulette</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>York Region Food Roulette</h1>
-      <div class="filter-group">
-        <label for="filter-select">Area:</label>
+    <nav class="top-nav">
+      <div class="nav-controls">
+        <select id="lang-select">
+          <option value="zh_CN" selected>简体中文</option>
+          <option value="en_CA">English (Canada)</option>
+        </select>
         <select id="filter-select">
-          <option value="All">All York Region</option>
-          <option value="Richmond Hill">Richmond Hill</option>
-          <option value="Markham">Markham</option>
-          <option value="Vaughan">Vaughan</option>
-          <option value="Newmarket">Newmarket</option>
-          <option value="Aurora">Aurora</option>
-          <option value="Whitchurch-Stouffville">Whitchurch-Stouffville</option>
+          <option value="All" data-i18n="allAreas">All York Region</option>
+          <option value="Richmond Hill" data-i18n="richmondHill">Richmond Hill</option>
+          <option value="Markham" data-i18n="markham">Markham</option>
+          <option value="Vaughan" data-i18n="vaughan">Vaughan</option>
+          <option value="Aurora" data-i18n="aurora">Aurora</option>
+          <option value="Newmarket" data-i18n="newmarket">Newmarket</option>
+          <option value="Whitchurch-Stouffville" data-i18n="stouffville">Whitchurch-Stouffville</option>
         </select>
       </div>
-    </header>
+    </nav>
 
-    <main class="wheel-wrapper">
-      <div class="pointer">▼</div>
-      <canvas id="roulette" width="500" height="500"></canvas>
-      <button id="spin-btn">SPIN!</button>
-    </main>
-
-    <!-- Modal for showing winning restaurant -->
-    <div id="result-modal" class="modal hidden">
-      <div class="modal-content">
-        <h2 id="result-name"></h2>
-        <p id="result-rating"></p>
-        <p id="result-address"></p>
-        <div class="modal-actions">
-          <a id="result-maps-link" target="_blank" rel="noopener" class="btn">View on Google Maps</a>
-          <button id="close-modal" class="btn secondary">Close</button>
+    <div class="app-layout" id="app-layout">
+      <!-- Left/Center Stage: Roulette -->
+      <main class="wheel-stage">
+        <h1 id="page-title" class="page-title" data-i18n="title">Pick a spot, trust the spin!</h1>
+        <div id="live-indicator" class="live-indicator">-</div>
+        <div class="canvas-wrapper">
+          <div class="pointer">▼</div>
+          <canvas id="roulette" width="480" height="480"></canvas>
         </div>
-      </div>
+        <p id="state-prompt" class="state-prompt"></p>
+      </main> 
+
+      <!-- Right Panel: Google Places Detail -->
+      <aside class="detail-panel" id="detail-panel">
+        <!-- Google Maps Header -->
+        <header class="panel-header">
+          <h2 id="panel-title">Loading...</h2>
+          <span id="panel-rating-badge" class="header-rating"></span>
+        </header>
+
+        <div class="panel-body">
+          <!-- Hero Image (Gallery or Street View) -->
+          <div class="photo-container">
+            <img id="panel-hero-photo" alt="Restaurant Photo" class="hero-image" />
+          </div>
+
+          <!-- Google Maps Location Frame with Border Shadow -->
+          <div class="map-frame-wrapper">
+            <iframe id="panel-maps-frame" class="maps-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+
+          <!-- Contact & Practical Info -->
+          <section class="section info-section">
+            <div class="info-row">
+              <span class="icon">📍</span>
+              <span id="panel-address"></span>
+            </div>
+            <div class="info-row" id="row-phone">
+              <span class="icon">📞</span>
+              <a id="panel-phone" href="#"></a>
+            </div>
+            <div class="info-row" id="row-website">
+              <span class="icon">🌐</span>
+              <a id="panel-website" target="_blank" rel="noopener">Website</a>
+            </div>
+          </section>
+
+          <!-- Opening Hours -->
+          <section class="section hours-section">
+            <h3 class="section-title" data-i18n="openingHours">Opening Hours</h3>
+            <ul id="panel-hours-list" class="hours-list"></ul>
+          </section>
+
+          <!-- Review Summary & Breakdown -->
+          <section class="section review-summary-section">
+            <h3 class="section-title" data-i18n="reviewsTitle">Reviews Summary</h3>
+            <div class="summary-card">
+              <div class="score-box">
+                <span id="summary-score" class="big-score">0.0</span>
+                <div class="star-display" id="summary-stars">★★★★★</div>
+                <span id="summary-count" class="count-subtext">0 reviews</span>
+              </div>
+              <!-- 5 to 1 Star Breakdown -->
+              <div class="rating-bars" id="rating-breakdown">
+                <!-- Populated dynamically via JS -->
+              </div>
+            </div>
+          </section>
+
+          <!-- Latest 10 Reviews -->
+          <section class="section reviews-list-section">
+            <h3 class="section-title" data-i18n="recentReviews">Recent Reviews</h3>
+            <div id="reviews-container" class="reviews-container"></div>
+          </section>
+        </div>
+      </aside>
     </div>
   </div>
-  <script src="app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
