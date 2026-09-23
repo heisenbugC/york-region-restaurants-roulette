@@ -121,24 +121,30 @@ export default {
     }
 
     if (url.pathname === "/roulette") {
-      url.pathname = "/routlette/";
+      url.pathname = "/roulette/";
       return Response.redirect(url.toString(), 301); 
     }
 
-// 3. Static Assets: Strip /roulette prefix so env.ASSETS finds root files
-    let cleanPath = url.pathname.replace(/^\/roulette\/?/, "") || "index.html";
-    if (cleanPath === "" || cleanPath.endsWith("/")) {
+    // 3. Static Assets: Strip /roulette prefix so env.ASSETS finds root files
+    let cleanPath = url.pathname.replace(/^\/roulette\/?/, "");
+    if (!cleanPath || cleanPath.endsWith("/")) {
       cleanPath += "index.html";
     }
 
-    // Fetch explicitly using the asset path
-    const targetAssetUrl = new URL(`/${cleanPath}`, url.origin);
-    const assetResponse = await env.ASSETS.fetch(new Request(targetAssetUrl.toString(), request));
+    // Build clean request directly to the root asset path
+    const targetAssetUrl = new URL(`/${cleanPath}`, "https://assets.local");
+    let assetResponse = await env.ASSETS.fetch(new Request(targetAssetUrl, {
+      method: request.method,
+      headers: request.headers
+    }));
 
-    // If a direct asset wasn't found, fall back explicitly to the roulette index.html
+    // If 404, fall back explicitly to the roulette index.html
     if (assetResponse.status === 404) {
-      const fallbackUrl = new URL("/index.html", url.origin);
-      return env.ASSETS.fetch(new Request(fallbackUrl.toString(), request));
+      const fallbackUrl = new URL("/index.html", "https://assets.local");
+      assetResponse = await env.ASSETS.fetch(new Request(fallbackUrl, {
+        method: request.method,
+        headers: request.headers
+      }));
     }
 
     return assetResponse;
