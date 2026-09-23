@@ -120,28 +120,36 @@ export default {
       return Response.json({ status: "ok", recordsUpdated: count });
     }
 
-    if (url.pathname === "/roulette" || url.pathname.startsWith("/roulette/")) {
-      return env.ROULETTE_SERVICE.fetch(request); 
+    if (url.pathname === "/roulette") {
+      url.pathname = "/routlette/";
+      return Response.redirect(url.toString(), 301); 
     }
 
-/*     if (url.pathname.startsWith("/roulette/")) {
-      const strippedPath = url.pathname.replace(/^\/roulette/, "") || "/";
-      const assetUrl = new URL(request.url);
-      assetUrl.pathname = strippedPath;
-      // Fetch from assets with stripped path
-      const assetResponse = await env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+// 3. Static Assets: Strip /roulette prefix so env.ASSETS finds root files
+    const assetUrl = new URL(request.url);
 
-      // SPA Fallback: if a sub-route is not a direct file, serve index.html
-      if (assetResponse.status === 404) {
-        assetUrl.pathname = "/index.html";
-        return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
-      }
+    if (assetUrl.pathname.startsWith("/roulette/")) {
+      assetUrl.pathname = assetUrl.pathname.replace(/^\/roulette/, "") || "/";
+    }
 
-      return assetResponse;
-    } */
+    // If root of roulette is hit (/), map to /index.html
+    if (assetUrl.pathname === "/" || assetUrl.pathname === "") {
+      assetUrl.pathname = "/index.html";
+    }
+
+    const assetRequest = new Request(assetUrl.toString(), request);
+    const assetResponse = await env.ASSETS.fetch(assetRequest);
+
+    // If an asset wasn't found directly, serve index.html (SPA fallback)
+    if (assetResponse.status === 404) {
+      assetUrl.pathname = "/index.html";
+      return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+    }
+
+    return assetResponse;
 
     // Fall back to Cloudflare static asset handling
-    return env.ASSETS.fetch(request);
+    //return env.ASSETS.fetch(request);
   },
 
   // Handles scheduled cron updates
