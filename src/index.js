@@ -126,30 +126,22 @@ export default {
     }
 
 // 3. Static Assets: Strip /roulette prefix so env.ASSETS finds root files
-    const assetUrl = new URL(request.url);
-
-    if (assetUrl.pathname.startsWith("/roulette/")) {
-      assetUrl.pathname = assetUrl.pathname.replace(/^\/roulette/, "") || "/";
+    let cleanPath = url.pathname.replace(/^\/roulette\/?/, "") || "index.html";
+    if (cleanPath === "" || cleanPath.endsWith("/")) {
+      cleanPath += "index.html";
     }
 
-    // If root of roulette is hit (/), map to /index.html
-    if (assetUrl.pathname === "/" || assetUrl.pathname === "") {
-      assetUrl.pathname = "/index.html";
-    }
+    // Fetch explicitly using the asset path
+    const targetAssetUrl = new URL(`/${cleanPath}`, url.origin);
+    const assetResponse = await env.ASSETS.fetch(new Request(targetAssetUrl.toString(), request));
 
-    const assetRequest = new Request(assetUrl.toString(), request);
-    const assetResponse = await env.ASSETS.fetch(assetRequest);
-
-    // If an asset wasn't found directly, serve index.html (SPA fallback)
+    // If a direct asset wasn't found, fall back explicitly to the roulette index.html
     if (assetResponse.status === 404) {
-      assetUrl.pathname = "/index.html";
-      return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+      const fallbackUrl = new URL("/index.html", url.origin);
+      return env.ASSETS.fetch(new Request(fallbackUrl.toString(), request));
     }
 
     return assetResponse;
-
-    // Fall back to Cloudflare static asset handling
-    //return env.ASSETS.fetch(request);
   },
 
   // Handles scheduled cron updates
