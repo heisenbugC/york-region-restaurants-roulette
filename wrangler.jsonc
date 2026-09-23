@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "york-region-restaurants-roulette",
+  "main": "src/index.js",
+  "compatibility_date": "2026-08-27",
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "desmond-zhu.com/roulette*",
+      "zone_id": "5b88b54900f19c095c6b76f3ee7c7a8f"
+    }
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "york_region_restaurants_db",
+      "database_name": "york_region_restaurants_db",
+      "database_id": "c9e19256-0bdc-45c2-ad54-860df272f38b"
+    }
+  ],
+  "triggers": {
+    "crons": ["0 4 * * 1"] // Runs every Monday at 4:00 AM UTC
+  }
+}
